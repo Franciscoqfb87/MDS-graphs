@@ -1,0 +1,37 @@
+# Created on Thu Feb  6 21:04:40 2025
+
+# @author: Francisco Cortés-Benítez
+"""
+
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# File path (adjust the path according to the file location on your PC. Example: ("G:\Myunit\\MD\\MDSdata.csv"))
+file_path = ("")
+
+# Load the data
+df = pd.read_csv(file_path)
+
+# Set up the style for the plots
+sns.set_theme(style="whitegrid")  # Clean and professional style
+plt.figure(figsize=(8, 6), dpi=600)  # Increase resolution for publications
+
+# Create the boxplot with Seaborn
+ax = sns.boxplot(data=df, palette="Set3")
+
+# Rotate X-axis labels for better visibility
+ax.set_xticklabels(ax.get_xticklabels(), rotation=90, ha="center", fontsize=18, fontweight="bold")
+
+# Adjust labels and title
+plt.ylabel("Average RMSD (Å)", fontsize=17, fontweight="bold")
+
+# Adjust margins
+plt.tight_layout()
+
+# Save the plot in high quality for publications. Adjust the path according to the file location on your PC. Example: ("RMSDboxplot.png")
+plt.savefig("", dpi=600, bbox_inches="tight")
+
+# Show the plot
+plt.show()
