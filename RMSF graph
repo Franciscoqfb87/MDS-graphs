@@ -1,0 +1,44 @@
+# @author: Francisco Cortés-Benítez
+"""
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Load data. Adjust the path according to the file location on your PC. Example: ("G:\Myunit\\MD\\MDSdata.csv")
+df = pd.read_csv("")
+
+# Rename the first column as "Residue"
+df.rename(columns={df.columns[0]: "Residue"}, inplace=True)
+
+# Remove columns whose name is "Unnamed" (in case they appear in the CSV)
+df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+
+# Set up the figure and size with higher resolution
+plt.figure(figsize=(10, 7), dpi=300)
+
+# Plot each dataset without smoothing and skipping the "Unnamed" columns
+for column in df.columns[1:]:  # Skip the first column (Residue)
+    original_x = df["Residue"]
+    original_y = df[column]
+    
+    if column.lower() == "17β-hsd1":
+        line_color, = plt.plot(original_x, original_y, label=f"{column}", linewidth=1.5, alpha=0.8, color='black')
+        # Plot the original line with higher transparency
+        plt.plot(original_x, original_y, linewidth=1, alpha=0.3, color='black')
+    else:
+        # Plot the original line with its corresponding color
+        line_color, = plt.plot(original_x, original_y, label=f"{column}", linewidth=1.5, alpha=0.8)
+
+# Set labels and title for clarity
+plt.xlabel("Residue number", fontsize=18, fontweight='bold')
+plt.ylabel("RMSF (Å)", fontsize=18, fontweight='bold')
+
+# Adjust x and y axis limits to make the origin coincide with (0,0) and extend to 200 on the X-axis
+plt.xlim(0, 285)
+plt.ylim(0, 6)
+
+# Improve the legend
+plt.legend(fontsize=12, loc="upper center", frameon=True, ncol=3)
+
+# Show the plot
+plt.show()
