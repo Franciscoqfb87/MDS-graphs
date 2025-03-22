@@ -1,0 +1,45 @@
+# Created on Sun Feb  9 22:53:33 2025
+
+# @author: Francisco Cortés-Benítez
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+def smooth_data(y, window_size=10):
+    return np.convolve(y, np.ones(window_size)/window_size, mode='valid')
+
+# Load data. Adjust the path according to the file location on your PC. Example: ("G:\Myunit\\MD\\MDSdata.csv")
+df = pd.read_csv("")
+
+# Rename the first column as "Time (ns)"
+df.rename(columns={df.columns[0]: "Time (ns)"}, inplace=True)
+
+# Set up the figure and size with higher resolution
+plt.figure(figsize=(10, 7), dpi=300)
+
+# Plot each dataset with smoothing and shadow
+for column in df.columns[1:]:  # Skip the first column (time)
+    original_x = df["Time (ns)"]
+    original_y = df[column]
+    smoothed_y = smooth_data(original_y)
+    smoothed_x = original_x[len(original_x) - len(smoothed_y):]  # Adjust the length of the x-axis
+    
+    if column.lower() == "17β-hsd1":
+        line_color, = plt.plot(smoothed_x, smoothed_y, label=f"{column}", linewidth=2.5, alpha=0.8, color='black')
+        plt.plot(original_x, original_y, linewidth=1, alpha=0.3, color='black')
+    else:
+        # Get the color of the smoothed line
+        line_color, = plt.plot(smoothed_x, smoothed_y, label=f"{column}", linewidth=2.5, alpha=0.8)
+        
+        # Plot the original line with higher transparency and the same color
+        plt.plot(original_x, original_y, linewidth=1.5, alpha=0.2, color=line_color.get_color())
+
+# Set labels and title for clarity
+plt.xlabel("Time (ns)", fontsize=18, fontweight='bold')
+plt.ylabel("RMSD (Å)", fontsize=18, fontweight='bold')
+
+# Adjust x and y axis limits to make the origin coincide with (0,0) and extend to 200 on the X-axis
+plt.xlim(0, 200)
+plt.ylim(0, None)
