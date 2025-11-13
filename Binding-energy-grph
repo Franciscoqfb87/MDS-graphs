@@ -1,0 +1,64 @@
+"""
+Created on Mon Feb 10 15:49:59 2025
+
+@author: Francisco Cortés-Benítez
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+def smooth_data(y, window_size=12):
+    """Applies a moving average to smooth the data."""
+    return np.convolve(y, np.ones(window_size)/window_size, mode='valid')
+
+# === Editable X-axis label ===
+x_label_name = "Time (ns)"  # <-- You can change this label easily
+
+# Load the .csv file. Example write ("G:\\My unit\\bindenergy-graph.csv")
+df = pd.read_csv("G:\\Mi unidad\\Articulos\\2025-Mitzi-Hannya\\MD-finales\\bindenergy-graph.csv")
+
+# Rename the first column using the X-axis label
+df.rename(columns={df.columns[0]: x_label_name}, inplace=True)
+
+# Set up the figure
+plt.figure(figsize=(10, 7), dpi=300)
+
+# Plot each dataset with smoothing and transparency
+for column in df.columns[1:]:  # Skip the first column (time)
+    original_x = df[x_label_name].to_numpy()
+    original_y = df[column].to_numpy()
+    
+    smoothed_y = smooth_data(original_y)
+    
+    # === FIX: Ensure smoothed_x matches smoothed_y length ===
+    # After convolution with 'valid', length reduces by (window_size - 1)
+    diff = len(original_y) - len(smoothed_y)
+    smoothed_x = original_x[diff // 2 : len(original_x) - (diff - diff // 2)]
+    
+    # Now smoothed_x and smoothed_y always have the same length
+    assert len(smoothed_x) == len(smoothed_y), "Length mismatch between X and Y"
+
+    # Plot
+    if column.lower() == "apo":
+        line_color, = plt.plot(smoothed_x, smoothed_y, label=f"{column}",
+                               linewidth=2.5, alpha=0.8, color='black')
+        plt.plot(original_x, original_y, linewidth=1, alpha=0.3, color='black')
+    else:
+        line_color, = plt.plot(smoothed_x, smoothed_y, label=f"{column}",
+                               linewidth=2.5, alpha=0.8)
+        plt.plot(original_x, original_y, linewidth=1.5, alpha=0.2,
+                 color=line_color.get_color())
+
+# === Axis labels ===
+plt.xlabel(x_label_name, fontsize=18, fontweight='bold')
+plt.ylabel("Binding energy (kcal/mol)", fontsize=18, fontweight='bold')
+
+# === Adjust X-axis to show full range (0–300 ns) ===
+plt.xlim(0, 300)
+
+# === Legend ===
+plt.legend(fontsize=12, loc="best", frameon=True, ncol=4)
+
+# Show plot
+plt.show()
