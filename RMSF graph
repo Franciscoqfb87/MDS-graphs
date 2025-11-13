@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Load data. Adjust the path according to the .csv file location on your PC. Example: ("G:\Myunit\\MD\\MDSdata.csv")
+# Load data. Adjust the path according to the .csv file location on your PC. Example: ("G:\Myunit\\MD\\RMSF-graph_example.csv")
 df = pd.read_csv("")
 
 # Rename the first column as "Residue"
