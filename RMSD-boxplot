@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# File path (adjust the path according to the file location on your PC. Example: ("G:\Myunit\\MD\\MDSdata.csv"))
+# File path (adjust the path according to the file location on your PC. Example: ("G:\Myunit\\MD\\RMSD-boxplot.csv"))
 file_path = ("")
 
 # Load the data
