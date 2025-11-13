@@ -12,7 +12,7 @@ def smooth_data(y, window_size=10):
     """Applies a moving average to smooth the data."""
     return np.convolve(y, np.ones(window_size)/window_size, mode='valid')
 
-# Load data. Adjust the path according to the file location on your PC. Example: ("G:\Myunit\\MD\\MDSdata.csv")
+# Load data. Adjust the path according to the file location on your PC. Example: ("G:\Myunit\\MD\\rmsd-graph_example.csv")
 df = pd.read_csv("")
 
 # Rename the first column as "Time (ns)"
