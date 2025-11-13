@@ -9,7 +9,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Path to the CSV file (adjust the path according to your file location)
+# Load data. Adjust the path according to the .csv file location on your PC. Example: ("G:\Myunit\\MD\\rmsd-graph_example.csv")
 file_path = ("")
 
 # Load the data
